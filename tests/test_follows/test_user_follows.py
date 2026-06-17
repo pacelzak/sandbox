@@ -3,6 +3,7 @@ from api_frame.users import Users
 from api_frame.auth import Auth 
 from helpers.assertions import *  
 import requests
+import allure_pytest 
 
 def test_follows_on_private(create_session, token):
 

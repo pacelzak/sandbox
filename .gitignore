@@ -28,4 +28,7 @@ method_rebase.py
 .vscode/
 .idea/
 *.swp
-*.swo
+*.swo 
+
+#allure 
+**/allure-results

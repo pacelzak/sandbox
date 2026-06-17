@@ -1,7 +1,7 @@
 from api_frame.users import Users 
 from api_frame.auth import Auth  
 from helpers.assertions import * 
-
+import allure_pytest
 
 def test_list_users(api, token):
     get_token = token("admin@buzzhive.com", "admin123")

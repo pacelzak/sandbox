@@ -3,7 +3,7 @@ import pytest
 from helpers.assertions import * 
 from hypothesis import given
 import hypothesis.strategies as st
-
+import allure_pytest
 
 
 @pytest.mark.parametrize("email, password", [("admin@buzzhive.com", "admin123"), ])

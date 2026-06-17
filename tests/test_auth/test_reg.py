@@ -2,6 +2,7 @@ from api_frame.auth import Auth
 import pytest 
 from helpers.data_generator import Genetator 
 from helpers.assertions import * 
+import allure_pytest 
 
 fake = Genetator() 
 

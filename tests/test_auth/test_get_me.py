@@ -1,6 +1,7 @@
 from api_frame.auth import Auth 
 from helpers.assertions  import * 
-import time
+import time 
+import allure_pytest
 
 """def test_get_me_ok(api): 
     
