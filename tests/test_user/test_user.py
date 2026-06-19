@@ -3,9 +3,10 @@ from api_frame.auth import Auth
 from helpers.assertions import * 
 import allure_pytest
 
-def test_list_users(api, token):
-    get_token = token("admin@buzzhive.com", "admin123")
-    user_client: Users = api(Users, get_token) 
+def test_list_users(create_session, token):
+    get_token = token("admin@buzzhive.com", "admin123") 
+    admin_session = create_session(get_token)
+    user_client = Users(session=admin_session)
     try:
         response = user_client.list_users() 
         assert_status_code(response, 200) 
@@ -13,9 +14,10 @@ def test_list_users(api, token):
     finally:
         requests.post("http://localhost:8000/api/reset")
 
-def test_apdate_me(api, token): 
-    get_token = token("admin@buzzhive.com", "admin123")
-    user_client: Users = api(Users, get_token) 
+def test_apdate_me(create_session, token): 
+    get_token = token("admin@buzzhive.com", "admin123") 
+    admin_session = create_session(get_token)
+    user_client = Users(session=admin_session)
     
     try:
         display_name = "pav"
@@ -28,13 +30,14 @@ def test_apdate_me(api, token):
         requests.post("http://localhost:8000/api/reset")
     
 
-def test_get_user_posts(api, token):  
+def test_get_user_posts(create_session, token):  
     get_token = token("admin@buzzhive.com", "admin123") 
-    user: Users = api(Users, get_token)  
+    admin_session = create_session(get_token)
+    user_client = Users(session=admin_session)
     try:
-        list_user_name = user.list_users() 
+        list_user_name = user_client.list_users() 
         user_name = list_user_name.json()["items"][1]["username"]
-        user_post = user.get_user_post(user_name) 
+        user_post = user_client.get_user_post(user_name) 
         assert_status_code(user_post, 200) 
     finally:
         requests.post("http://localhost:8000/api/reset")

@@ -1,22 +1,18 @@
 from api_frame.auth import Auth 
 import pytest 
-from helpers.data_generator import Genetator 
 from helpers.assertions import * 
 import allure_pytest 
 
-fake = Genetator() 
 
-test_users = [
-    (fake.email, fake.username, fake.password, fake.display_name),
-    (fake.email, fake.username, fake.password, fake.display_name),
-    (fake.email, fake.username, fake.password, fake.display_name),
-]
-
-@pytest.mark.parametrize("email, username, password, display_name", test_users)
-def test_registration(auth_api, email, username, password, display_name): 
+def test_registration(auth_api, user_data): 
 
     """Успешная регистрация нового пользователя"""
-    response = auth_api.register(email, username, password, display_name)
+    response = auth_api.register(
+        user_data['email'],
+        user_data['username'],
+        user_data['password'],
+        user_data['display_name']
+    )
     assert_status_code(response, 201) 
 
 

@@ -1,6 +1,7 @@
 import pytest 
 from api_frame.auth import Auth 
 from api_frame.base_api import BaseApi
+from helpers.data_generator import Genetator 
 import requests
 
 
@@ -33,4 +34,16 @@ def create_session():
         session.headers.update({"Authorization": f"Bearer {token}"})
         return session
         
-    return _create
+    return _create 
+
+fake = Genetator() 
+
+@pytest.fixture()
+def user_data(request):
+    """Генерирует новые данные для каждого теста"""
+    return {
+        'email': fake.email,
+        'username': fake.username,
+        'password': fake.password,
+        'display_name': fake.display_name
+    }
