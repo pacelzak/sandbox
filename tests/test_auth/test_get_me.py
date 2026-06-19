@@ -3,16 +3,17 @@ from helpers.assertions  import *
 import time 
 import allure_pytest
 
-"""def test_get_me_ok(api): 
+def test_get_me_ok(token,create_session): 
     
-
-    user : Auth = api(Auth)
-    response = user.get_me() 
-
+    """Информация о пользователе"""
+    get_token = token("admin@buzzhive.com", "admin123") 
+    admin_session = create_session(get_token)
+    user_client = Auth(session=admin_session) 
+    response = user_client.get_me() 
     assert_status_code(response, 200) 
     assert_message(response, "OK")
     assert_headers(response, "Content-Type", "application/json") 
-    assert_response_time(response, 0.25) """
+    assert_response_time(response, 0.25) 
 
 
 def test_get_me_unreg(auth_api): 
@@ -25,9 +26,6 @@ def test_get_me_unreg(auth_api):
 
 
 
-def test_failde_get_me(): 
-    
-    auth = Auth() 
     
     
 
