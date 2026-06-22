@@ -1,16 +1,32 @@
 from api_frame.follows import Follows 
 from api_frame.users import Users 
-from api_frame.auth import Auth 
 from helpers.assertions import *  
 import requests
-import allure_pytest 
+import allure_pytest  
+
+from dotenv import load_dotenv
+import os  
+load_dotenv() 
+
+moderator_email = os.getenv("moderator")  
+moderator_password = os.getenv("moderator_password")  
+
+admin_email = os.getenv("admin")  
+admin_password = os.getenv("admin_password")  
+
+
+ban_email = os.getenv("ban_email") 
+ban_password = os.getenv("ban_password")  
+
+dav_email = os.getenv("dav_email") 
+dav_password = os.getenv("dav_password") 
 
 def test_follows_on_private(create_session, token):
 
     """Подписка на приватный канал"""
-  
-    admin_token = token("admin@buzzhive.com", "admin123") 
-    mod_token = token("mod@buzzhive.com", "mod123") 
+
+    admin_token = token(admin_email, admin_password) 
+    mod_token = token(moderator_email, moderator_password) 
     admin_session = create_session(admin_token)
     mod_session = create_session(mod_token)
     user_admin = Users(session=admin_session)
@@ -32,8 +48,8 @@ def test_follows(create_session, token):
     
     """Подписка не на приватный аккаунт""" 
     
-    admin_token = token("admin@buzzhive.com", "admin123") 
-    mod_token = token("mod@buzzhive.com", "mod123")  
+    admin_token = token(admin_email, admin_password) 
+    mod_token = token(moderator_email, moderator_password) 
     admin_session = create_session(admin_token)
     mod_session = create_session(mod_token)
     follow_mod = Follows(session=mod_session)
@@ -54,7 +70,7 @@ def test_follows_on_banned_user(create_session, token):
     
     """Подписка на забаненного пользователя""" 
     
-    admin_session = create_session(token("admin@buzzhive.com", "admin123")) 
+    admin_session = create_session(token(admin_email, admin_password)) 
     admin_follows = Follows(admin_session)
     
     try: 
@@ -67,8 +83,8 @@ def test_unfollow_user(create_session, token):
     
     """Отписка от пользователя""" 
     
-    admin_session = create_session(token("admin@buzzhive.com", "admin123")) 
-    mod_session = create_session(token("mod@buzzhive.com", "mod123")) 
+    admin_session = create_session(token(admin_email, admin_password)) 
+    mod_session = create_session(token(moderator_email, moderator_password)) 
     follow_user = Follows(session=admin_session)
     follow_mod = Follows(session=mod_session) 
     
@@ -84,8 +100,8 @@ def test_reject_follow(create_session, token):
     
     """Отклонение подписки на приватный аккаунт"""
     
-    admin_token = token("admin@buzzhive.com", "admin123") 
-    mod_token = token("mod@buzzhive.com", "mod123") 
+    admin_token = token(admin_email, admin_password) 
+    mod_token = token(moderator_email, moderator_password) 
     admin_session = create_session(admin_token)
     mod_session = create_session(mod_token)
     user_admin = Users(session=admin_session)
@@ -108,16 +124,16 @@ def test_list_requests(create_session, token):
     
     """Список запросов"""
     
-    admin_token = token("admin@buzzhive.com", "admin123") 
+    admin_token = token(admin_email, admin_password) 
     admin_session = create_session(admin_token)
     user_admin = Users(session=admin_session)
     follow_admin = Follows(session=admin_session) 
     
-    mod_token = token("mod@buzzhive.com", "mod123")  
+    mod_token = token(moderator_email, moderator_password)  
     mod_session = create_session(mod_token)
     follow_mod = Follows(session=mod_session)
     
-    mod_token2 = token("dave@buzzhive.com", "dave123")  
+    mod_token2 = token(dav_email, dav_password)  
     mod_session2 = create_session(mod_token2)
     follow_mod2 = Follows(session=mod_session2)
 

@@ -2,10 +2,18 @@ from api_frame.users import Users
 from api_frame.auth import Auth  
 from helpers.assertions import * 
 import allure_pytest
-from helpers.schema import * 
+from helpers.schema_login import * 
+
+from dotenv import load_dotenv
+import os  
+load_dotenv() 
+
+
+admin_email = os.getenv("admin")  
+admin_password = os.getenv("admin_password")  
 
 def test_list_users(create_session, token):
-    get_token = token("admin@buzzhive.com", "admin123") 
+    get_token = token(admin_email, admin_password) 
     admin_session = create_session(get_token)
     user_client = Users(session=admin_session)
     try:
@@ -17,7 +25,7 @@ def test_list_users(create_session, token):
         requests.post("http://localhost:8000/api/reset")
 
 def test_apdate_me(create_session, token): 
-    get_token = token("admin@buzzhive.com", "admin123") 
+    get_token = token(admin_email, admin_password) 
     admin_session = create_session(get_token)
     user_client = Users(session=admin_session)
     
@@ -33,7 +41,7 @@ def test_apdate_me(create_session, token):
     
 
 def test_get_user_posts(create_session, token):  
-    get_token = token("admin@buzzhive.com", "admin123") 
+    get_token = token(admin_email, admin_password) 
     admin_session = create_session(get_token)
     user_client = Users(session=admin_session)
     try:

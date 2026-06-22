@@ -1,41 +1,51 @@
-from api_frame.auth import Auth 
 import pytest 
 from helpers.assertions import * 
-from helpers.schema import * 
-from hypothesis import given
-import hypothesis.strategies as st
-import allure_pytest
+from helpers.schema_login import * 
+
+import allure_pytest 
+from dotenv import load_dotenv
+import os  
+load_dotenv() 
+
+admin_email = os.getenv("admin")
+admin_password = os.getenv("admin_password") 
+
+ban_email = os.getenv("ban_email") 
+ban_password = os.getenv("ban_password")
 
 
-
-@pytest.mark.parametrize("email, password", [("admin@buzzhive.com", "admin123"), ])
+@pytest.mark.parametrize("email, password", [(admin_email, admin_password), ])
 def test_successful_login(auth_api,email, password): 
     
-    """Успешная авторизация"""
-    response = auth_api.login(email, password) 
-    assert_status_code(response, 200) 
-    TokenResponse.model_validate(response.json()) 
-  
+    """Успешная авторизация""" 
+    try:
+        response = auth_api.login(email, password) 
+        assert_status_code(response, 200) 
+        SchemaAuth.model_validate(response.json()) 
+    finally: 
+        requests.post("http://localhost:8000/api/reset")
     
     
-@pytest.mark.parametrize("email, password", [("frank@buzzhive.com", "frank123")])
+@pytest.mark.parametrize("email, password", [(ban_email, ban_password)])
 def test_banned_login(auth_api,email, password): 
     
-    """Авторизация забаненного пользователя"""
-    response = auth_api.login(email, password) 
-    assert_status_code(response, 400)   
+    """Авторизация забаненного пользователя""" 
+    try: 
+        response = auth_api.login(email, password) 
+        assert_status_code(response, 400)   
+    finally: 
+        requests.post("http://localhost:8000/api/reset")
 
 
-@given(
-    email=st.emails(), 
-    password=st.text(min_size=8, max_size=20)
-)
-def test_unsuccessful_login(auth_api, email, password): 
+
+def test_unsuccessful_login(auth_api, user_data): 
     """Авторизация незарегистрированного пользователя с генерацией случайных данных"""
     
-    print(f"\n[Hypothesis Data] Email: {email} | Password: {password}")
-    response = auth_api.login(email, password) 
-    assert_status_code(response, 401)
+    try:
+        response = auth_api.login(user_data["email"], user_data["password"]) 
+        assert_status_code(response, 401) 
+    finally: 
+        requests.post("http://localhost:8000/api/reset")
     
 
 
