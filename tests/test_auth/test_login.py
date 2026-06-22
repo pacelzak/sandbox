@@ -5,7 +5,7 @@ from helpers.schema import *
 from hypothesis import given
 import hypothesis.strategies as st
 import allure_pytest
-from pydantic import ValidationError
+
 
 
 @pytest.mark.parametrize("email, password", [("admin@buzzhive.com", "admin123"), ])

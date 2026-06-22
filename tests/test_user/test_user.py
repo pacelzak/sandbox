@@ -2,6 +2,7 @@ from api_frame.users import Users
 from api_frame.auth import Auth  
 from helpers.assertions import * 
 import allure_pytest
+from helpers.schema import * 
 
 def test_list_users(create_session, token):
     get_token = token("admin@buzzhive.com", "admin123") 
@@ -10,7 +11,8 @@ def test_list_users(create_session, token):
     try:
         response = user_client.list_users() 
         assert_status_code(response, 200) 
-        assert_message(response, "OK")  
+        assert_message(response, "OK")   
+        UserPaginatedResponse.model_validate(response.json())
     finally:
         requests.post("http://localhost:8000/api/reset")
 
