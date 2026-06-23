@@ -40,7 +40,7 @@ def test_test_registration_with_double_data(auth_api, user_data):
         )
         assert_status_code(response, 409) 
     finally: 
-        requests.post("http://localhost:8000/api/reset")
+        requests.post("http://localhost:8000/api/reset") 
     
 
 

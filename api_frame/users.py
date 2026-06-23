@@ -5,7 +5,9 @@ class Users(BaseApi):
     
     
     def list_users(self, search=None, sort_by=None, sort_order=None, page=None, per_page=None):
-        """Список пользователей"""
+        
+        """Список пользователей""" 
+        
         params = {
             "search": search, 
             "sort_by": sort_by, 
@@ -36,6 +38,8 @@ class Users(BaseApi):
         return self.patch("/api/users/me", json=data) 
     
     def update_avatar(self, file): 
+        
+        """Обновление аватара"""
         
         with open(f"{file}", 'rb') as img:
             files = {'file': ('my_photo.jpg', img, 'image/jpeg')} 

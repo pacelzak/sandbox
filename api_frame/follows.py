@@ -5,25 +5,31 @@ class Follows(BaseApi):
     
     def follow_user(self, username=None): 
         
-        """Подписка на юзера"""
+        """Подписка на юзера"""  
+        
         return self.post(f"/api/users/{username}/follow") 
     
     def unfollow_user(self, username=None): 
         
-        """Отписка от юзера"""
+        """Отписка от юзера""" 
+        
         return self.delete(f"/api/users/{username}/follow") 
     
     def get_follow_requests(self, page=None, per_page=None): 
+         
+        """Полученные запросы в друзья"""
          
         params = {"page": page, "per_page": per_page}
         return self.get("/api/follows/requests", params=params) 
     
     def accept_follow_requests(self, follow_id=None): 
         
-        """Принятие запроса"""
+        """Принятие запроса в друзья""" 
+        
         return self.post(f"/api/follows/requests/{follow_id}/accept") 
     
     def reject_follow_requests(self, follow_id=None): 
         
-        """"Отказ от запроса"""
+        """"Отказ от запроса в друзья""" 
+        
         return self.post(f"/api/follows/requests/{follow_id}/reject")

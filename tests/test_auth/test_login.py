@@ -1,4 +1,5 @@
 import pytest 
+from api_frame.auth import Auth
 from helpers.assertions import * 
 from helpers.schema_login import * 
 
@@ -14,12 +15,12 @@ ban_email = os.getenv("ban_email")
 ban_password = os.getenv("ban_password")
 
 
-@pytest.mark.parametrize("email, password", [(admin_email, admin_password), ])
+
 def test_successful_login(auth_api,email, password): 
     
     """Успешная авторизация""" 
     try:
-        response = auth_api.login(email, password) 
+        response = auth_api.login(admin_email, admin_password) 
         assert_status_code(response, 200) 
         SchemaAuth.model_validate(response.json()) 
     finally: 
@@ -45,9 +46,16 @@ def test_unsuccessful_login(auth_api, user_data):
         response = auth_api.login(user_data["email"], user_data["password"]) 
         assert_status_code(response, 401) 
     finally: 
-        requests.post("http://localhost:8000/api/reset")
-    
+        requests.post("http://localhost:8000/api/reset") 
 
+def test_login_with_failed_password(auth_api): 
+    
+    """Авторизация с невереным паролем""" 
+    try:
+        response = auth_api.login(admin_email, ban_password) 
+        assert_status_code(response, 401)
+    finally: 
+        requests.post("http://localhost:8000/api/reset")
 
 
     

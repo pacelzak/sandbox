@@ -1,5 +1,6 @@
 from api_frame.auth import Auth 
-from helpers.assertions  import * 
+from helpers.assertions  import *  
+import allure_pytest
 from dotenv import load_dotenv
 import os  
 load_dotenv() 
@@ -7,7 +8,7 @@ load_dotenv()
 admin_email = os.getenv("admin")
 admin_password = os.getenv("admin_password")
 
-import allure_pytest
+
 
 def test_get_me_ok(token,create_session): 
     

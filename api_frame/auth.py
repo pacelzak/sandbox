@@ -29,11 +29,14 @@ class Auth(BaseApi):
 
     def logout(self, refresh_token=None): 
         
-        """Выход из аккаунта""" 
+        """Выход из аккаунта"""  
+        
         data = {"refresh_token": refresh_token} 
         return self.post("/api/auth/logout", json=data)  
     
     def get_me(self):  
+        
+        """Информация о своем аккаунте""" 
         
         return self.get("/api/auth/me")  
         
