@@ -10,6 +10,7 @@ load_dotenv()
 moderator_email = os.getenv("moderator")  
 moderator_password = os.getenv("moderator_password")  
 
+rebase_url = os.getenv("rebase_url")
 
 def test_registration(auth_api, user_data): 
 
@@ -24,7 +25,7 @@ def test_registration(auth_api, user_data):
         assert_status_code(response, 201) 
         SchemaReg.model_validate(response.json())
     finally:
-        requests.post("http://localhost:8000/api/reset")
+        requests.post(rebase_url)
     
 
 def test_test_registration_with_double_data(auth_api, user_data):  
@@ -40,7 +41,7 @@ def test_test_registration_with_double_data(auth_api, user_data):
         )
         assert_status_code(response, 409) 
     finally: 
-        requests.post("http://localhost:8000/api/reset") 
+        requests.post(rebase_url) 
     
 
 

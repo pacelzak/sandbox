@@ -1,10 +1,16 @@
 import requests 
+import allure_pytest 
+from dotenv import load_dotenv
+import os  
+load_dotenv()  
 
-class BaseApi: 
+
+
+class BaseApi:  
     
     def __init__(self, session=None):
         
-        self.url = 'http://localhost:8000' 
+        self.url = os.getenv("url") 
         self.session = session or requests.Session()  
        
     

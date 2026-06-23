@@ -19,7 +19,9 @@ ban_email = os.getenv("ban_email")
 ban_password = os.getenv("ban_password")  
 
 dav_email = os.getenv("dav_email") 
-dav_password = os.getenv("dav_password") 
+dav_password = os.getenv("dav_password")  
+
+rebase_url = os.getenv("rebase_url")
 
 def test_follows_on_private(create_session, token):
 
@@ -42,7 +44,7 @@ def test_follows_on_private(create_session, token):
         assert_status_code(accept_requests, 200)
         
     finally: 
-        requests.post("http://localhost:8000/api/reset") 
+        requests.post(rebase_url) 
 
 def test_follows(create_session, token): 
     
@@ -64,7 +66,7 @@ def test_follows(create_session, token):
         
         
     finally: 
-        requests.post("http://localhost:8000/api/reset") 
+        requests.post(rebase_url) 
 
 def test_follows_on_banned_user(create_session, token): 
     
@@ -77,7 +79,7 @@ def test_follows_on_banned_user(create_session, token):
         method_follows = admin_follows.follow_user("frank_banned") 
         assert_status_code(method_follows, 201)
     finally: 
-        requests.post("http://localhost:8000/api/reset") 
+        requests.post(rebase_url) 
 
 def test_unfollow_user(create_session, token): 
     
@@ -93,7 +95,7 @@ def test_unfollow_user(create_session, token):
         unfollow = follow_mod.unfollow_user("admin") 
         assert_status_code(unfollow, 204)
     finally: 
-        requests.post("http://localhost:8000/api/reset") 
+        requests.post(rebase_url) 
 
 
 def test_reject_follow(create_session, token): 
@@ -117,7 +119,7 @@ def test_reject_follow(create_session, token):
         assert_status_code(reject, 204)
     
     finally:
-        requests.post("http://localhost:8000/api/reset") 
+        requests.post(rebase_url) 
         
         
 def test_list_requests(create_session, token): 
@@ -148,7 +150,7 @@ def test_list_requests(create_session, token):
         assert id_requests in list_id
     
     finally:
-        requests.post("http://localhost:8000/api/reset")
+        requests.post(rebase_url)
     
     
    

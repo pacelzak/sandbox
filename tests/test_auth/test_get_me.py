@@ -8,6 +8,7 @@ load_dotenv()
 admin_email = os.getenv("admin")
 admin_password = os.getenv("admin_password")
 
+rebase_url = os.getenv("rebase_url")
 
 
 def test_get_me_ok(token,create_session): 
@@ -23,7 +24,7 @@ def test_get_me_ok(token,create_session):
         assert_headers(response, "Content-Type", "application/json") 
         assert_response_time(response, 0.25) 
     finally: 
-        requests.post("http://localhost:8000/api/reset")
+        requests.post(rebase_url)
 
 
 def test_get_me_unreg(auth_api): 
@@ -35,7 +36,7 @@ def test_get_me_unreg(auth_api):
         assert_status_code(response, 403) 
         assert_message(response, "Forbidden")  
     finally: 
-        requests.post("http://localhost:8000/api/reset")
+        requests.post(rebase_url)
 
 
     
