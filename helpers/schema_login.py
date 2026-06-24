@@ -87,7 +87,7 @@ class Item(BaseModel):
     
     model_config = ConfigDict(extra="forbid") 
     id : str 
-    follower : list[Follower]  
+    follower : Follower  
     status : str 
     created_at : datetime  
     
