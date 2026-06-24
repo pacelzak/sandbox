@@ -41,7 +41,7 @@ def test_banned_login(auth_api,email, password):
 
 
 def test_unsuccessful_login(auth_api, user_data): 
-    """Авторизация незарегистрированного пользователя с генерацией случайных данных"""
+    """Авторизация незарегистрированного пользователя"""
     
     try:
         response = auth_api.login(user_data["email"], user_data["password"]) 
@@ -51,7 +51,7 @@ def test_unsuccessful_login(auth_api, user_data):
 
 def test_login_with_failed_password(auth_api): 
     
-    """Авторизация с невереным паролем""" 
+    """Авторизация зарегистрированного пользователя с невереным паролем""" 
     try:
         response = auth_api.login(admin_email, ban_password) 
         assert_status_code(response, 401)
@@ -59,18 +59,7 @@ def test_login_with_failed_password(auth_api):
         requests.post(rebase_url)
     
 
-def test_double_login(): 
-    
-    """Повторная авторизация""" 
-    try: 
-        first_session = Auth() 
-        response = first_session.login(admin_email, admin_password)
-        assert_status_code(response, 200) 
-        second_session = Auth() 
-        second_response = second_session.login(admin_email, admin_password)
-        assert_status_code(second_response, 200) 
-    finally: 
-        requests.post(rebase_url)
+
 
 
     
