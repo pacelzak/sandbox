@@ -37,8 +37,8 @@ class SchemaReg(BaseModel):
 class UserResponsepart2(BaseModel):
     id: str
     username: str
-    display_name: str | None = None
-    avatar_url: str | None = None
+    display_name: str | None 
+    avatar_url: str | None 
     is_verified: bool
 
 
@@ -47,4 +47,58 @@ class UserPaginatedResponse(BaseModel):
     total: int
     page: int
     per_page: int
-    pages: int
+    pages: int 
+    
+    
+
+
+'''{
+  "items": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "follower": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "username": "string",
+        "display_name": "string",
+        "avatar_url": "string",
+        "is_verified": true
+      },
+      "status": "string",
+      "created_at": "2026-06-23T11:48:06.636Z"
+    }
+  ],
+  "total": 0,
+  "page": 0,
+  "per_page": 0,
+  "pages": 0
+}''' 
+
+
+class Follower(BaseModel): 
+    
+    model_config = ConfigDict(extra="forbid")
+    id : str 
+    username : str 
+    display_name : str 
+    avatar_url : str | None 
+    is_verified : bool 
+
+class Item(BaseModel): 
+    
+    model_config = ConfigDict(extra="forbid") 
+    id : str 
+    follower : list[Follower]  
+    status : str 
+    created_at : datetime  
+    
+    
+
+
+class Bas(BaseModel): 
+    
+    items : list[Item] 
+    total: int
+    page: int
+    per_page: int
+    pages: int 
+    

@@ -1,6 +1,7 @@
 from api_frame.follows import Follows 
 from api_frame.users import Users 
 from helpers.assertions import *  
+from helpers.schema_login import *  
 import requests
 import allure_pytest  
 
@@ -147,8 +148,8 @@ def test_list_requests(create_session, token):
         list_id2 = follow_mod2.follow_user("admin").json() 
         res = follow_admin.get_follow_requests().json() 
         list_id = [i["id"] for i in res["items"]]
-        assert id_requests in list_id
-    
+        assert id_requests in list_id 
+        Bas.model_validate(res)
     finally:
         requests.post(rebase_url)
     
