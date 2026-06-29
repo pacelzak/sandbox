@@ -16,7 +16,7 @@ def assert_message(response, except_message):
 def assert_headers(response, excerpt_header, value_headers): 
     """Проверка заголовка"""
     value = response.headers.get(excerpt_header)
-    assert value == value_headers
+    assert value == value_headers, (response.headers)
     
 def assert_json_value(response, key, expected_value):
     """Проверка конкретного ключа"""

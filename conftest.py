@@ -36,10 +36,11 @@ def create_session():
         
     return _create 
 
-fake = Genetator() 
 
 @pytest.fixture()
-def user_data(request):
+def user_data(request): 
+    
+    fake = Genetator() 
     """Генерирует новые данные для каждого теста"""
     return {
         'email': fake.email,
