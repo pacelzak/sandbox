@@ -1,6 +1,7 @@
 
 from typing import Literal
 from pydantic import BaseModel, Field, ConfigDict 
+from typing import List, Union
 from uuid import UUID
 from datetime import datetime 
 
@@ -101,4 +102,18 @@ class Bas(BaseModel):
     page: int
     per_page: int
     pages: int 
+
+class HTTPErrorDetail(BaseModel):
     
+    detail: str
+
+class ValidationErrorItem(BaseModel):
+
+    loc: List[Union[str, int]]
+    msg: str
+    type: str
+
+
+
+class HTTPValidationError(BaseModel):
+    detail: List[ValidationErrorItem]

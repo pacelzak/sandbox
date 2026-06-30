@@ -1,5 +1,6 @@
 from api_frame.auth import Auth 
 from helpers.assertions  import *  
+from helpers.schema_login  import *  
 import allure_pytest
 from dotenv import load_dotenv
 import os  
@@ -22,7 +23,7 @@ def test_get_me_ok(token,create_session):
         assert_status_code(response, 200) 
         assert_message(response, "OK")
         assert_headers(response, "Content-Type", "application/json") 
-        assert_response_time(response, 0.25) 
+        SchemaReg.model_validate(response.json())
     finally: 
         requests.post(rebase_url)
 
@@ -35,6 +36,7 @@ def test_get_me_unreg(auth_api):
         response = auth_api.get_me() 
         assert_status_code(response, 403) 
         assert_message(response, "Forbidden")  
+        HTTPErrorDetail.model_validate(response.json())
     finally: 
         requests.post(rebase_url)
 

@@ -34,7 +34,8 @@ def test_banned_login(auth_api,email, password):
     """Авторизация забаненного пользователя""" 
     try: 
         response = auth_api.login(email, password) 
-        assert_status_code(response, 400)   
+        assert_status_code(response, 400)  
+        HTTPErrorDetail.model_validate(response.json()) 
     finally: 
         requests.post(rebase_url)
 
@@ -45,7 +46,8 @@ def test_unsuccessful_login(auth_api, user_data):
     
     try:
         response = auth_api.login(user_data["email"], user_data["password"]) 
-        assert_status_code(response, 401) 
+        assert_status_code(response, 401)  
+        HTTPErrorDetail.model_validate(response.json())
     finally: 
         requests.post(rebase_url) 
 
@@ -55,9 +57,32 @@ def test_login_with_failed_password(auth_api):
     try:
         response = auth_api.login(admin_email, ban_password) 
         assert_status_code(response, 401)
+        HTTPErrorDetail.model_validate(response.json())
     finally: 
         requests.post(rebase_url)
+
+
+@pytest.mark.parametrize(
+    "email, password, expected_status",
+    [(admin_email, "", 401), ("", admin_password, 422), ("", "", 422)],
+)
+def test_login_with_empty_field(auth_api, email, password, expected_status):
+    """Авторизация c пустыми полями"""
+    try:
+        response = auth_api.login(email, password)
+        assert_status_code(response, expected_status)
+
+        # Выбираем схему в зависимости от статуса ответа
+        if expected_status == 422:
+            HTTPValidationError.model_validate(response.json())
+        else:
+            # Для 401 (и возможно 400/403, если там тоже строки)
+            HTTPErrorDetail.model_validate(response.json())
+
+    finally:
+        requests.post(rebase_url)
     
+
 
 
 
